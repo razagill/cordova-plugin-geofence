@@ -49,6 +49,7 @@ public class TransitionReceiver extends BroadcastReceiver {
                     DefaultHttpClient httpClient = new DefaultHttpClient();
                     HttpPost request = new HttpPost(geoNotification.url);
 
+                    Log.println(Log.DEBUG, GeofencePlugin.TAG, "URL:" + geoNotification.url);
                     StringEntity se = new StringEntity(geoNotification.toJson());
                     request.setEntity(se);
                     request.setHeader("Accept", "application/json");
