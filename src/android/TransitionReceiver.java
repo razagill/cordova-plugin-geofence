@@ -32,6 +32,8 @@ public class TransitionReceiver extends BroadcastReceiver {
 
     private class PostLocationTask extends AsyncTask<String, Void, String> {
 
+        private GeoNotificationManager geoNotificationManager;
+
         @Override
         protected String doInBackground(String... geofencesJson) {
             try {
@@ -56,9 +58,12 @@ public class TransitionReceiver extends BroadcastReceiver {
                     }
 
                     HttpResponse response = httpClient.execute(request);
-
+                    //Remove the geofence
+                    geoNotificationManager.removeGeoNotification(geoNotification.id, null);
+                    
                     Log.println(Log.DEBUG, GeofencePlugin.TAG,  "Response received"+ response.getStatusLine());
                     if (response.getStatusLine().getStatusCode() == 200) {
+
                         Log.println(Log.DEBUG, GeofencePlugin.TAG,  "Reponse OK");
                     } else {
                         Log.println(Log.DEBUG, GeofencePlugin.TAG,  "Reponse KO");
