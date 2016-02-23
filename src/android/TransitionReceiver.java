@@ -13,6 +13,8 @@ import java.util.*;
 
 public class TransitionReceiver extends BroadcastReceiver {
 
+    private GeoNotificationManager geoNotificationManager;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Logger.setLogger(new Logger(GeofencePlugin.TAG, context, false));
@@ -28,11 +30,10 @@ public class TransitionReceiver extends BroadcastReceiver {
             PostLocationTask task = new TransitionReceiver.PostLocationTask();
             task.execute(geofencesJson);
         }
+        geoNotificationManager = new GeoNotificationManager(context);
     }
 
     private class PostLocationTask extends AsyncTask<String, Void, String> {
-
-        private GeoNotificationManager geoNotificationManager;
 
         @Override
         protected String doInBackground(String... geofencesJson) {
@@ -60,7 +61,7 @@ public class TransitionReceiver extends BroadcastReceiver {
                     HttpResponse response = httpClient.execute(request);
                     //Remove the geofence
                     geoNotificationManager.removeGeoNotification(geoNotification.id, null);
-                    
+
                     Log.println(Log.DEBUG, GeofencePlugin.TAG,  "Response received"+ response.getStatusLine());
                     if (response.getStatusLine().getStatusCode() == 200) {
 
